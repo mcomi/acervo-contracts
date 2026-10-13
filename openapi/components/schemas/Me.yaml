@@ -1,0 +1,25 @@
+type: object
+required: [user, organization, entitlements, permissions]
+properties:
+  user:
+    $ref: CurrentUser.yaml
+  organization:
+    $ref: OrganizationSummary.yaml
+  entitlements:
+    type: array
+    maxItems: 100
+    uniqueItems: true
+    description: Product modules the organization's subscription includes, by module id.
+    items:
+      $ref: ModuleId.yaml
+    examples: [[catalog, custody]]
+  permissions:
+    type: array
+    maxItems: 1000
+    uniqueItems: true
+    description: What this user may do, as `<module>.<resource>.<action>`.
+    items:
+      type: string
+      maxLength: 100
+      pattern: ^[a-z]+(-[a-z]+)*(\.[a-z]+(-[a-z]+)*){2}$
+    examples: [[catalog.works.read, catalog.works.write]]

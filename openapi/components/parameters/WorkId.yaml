@@ -1,0 +1,7 @@
+name: workId
+in: path
+required: true
+schema:
+  type: string
+  format: uuid
+  maxLength: 36

@@ -1,0 +1,5 @@
+description: URL of the created resource.
+schema:
+  type: string
+  format: uri-reference
+  maxLength: 2048

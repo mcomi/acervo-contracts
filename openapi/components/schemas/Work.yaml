@@ -1,0 +1,49 @@
+type: object
+description: |
+  The intellectual creation (FIAF Work), independent of any copy. Variants, manifestations and
+  items hang from it.
+required: [id, title, countries, createdAt, updatedAt]
+properties:
+  id:
+    type: string
+    format: uuid
+    maxLength: 36
+    readOnly: true
+    examples: [0192f0c4-5b8e-7a1d-9c3e-2f6b8d4a1e70]
+  title:
+    type: string
+    maxLength: 500
+    examples: [Los olvidados]
+  originalTitle:
+    type: string
+    maxLength: 500
+    examples: [The Young and the Damned]
+  productionYear:
+    type: integer
+    format: int32
+    minimum: 1870
+    maximum: 2100
+    examples: [1950]
+  countries:
+    type: array
+    maxItems: 20
+    uniqueItems: true
+    description: Production countries (ISO 3166-1 alpha-2). Empty when unknown.
+    items:
+      $ref: CountryCode.yaml
+    examples: [[MX]]
+  notes:
+    type: string
+    maxLength: 10000
+  createdAt:
+    type: string
+    format: date-time
+    maxLength: 40
+    readOnly: true
+    examples: ['2026-10-11T18:30:00Z']
+  updatedAt:
+    type: string
+    format: date-time
+    maxLength: 40
+    readOnly: true
+    examples: ['2026-10-11T18:30:00Z']

@@ -1,0 +1,10 @@
+description: The request must send `If-Match`.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Precondition Required
+      status: 428
+      code: resource.version-required

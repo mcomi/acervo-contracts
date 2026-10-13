@@ -1,0 +1,62 @@
+get:
+  operationId: listWorks
+  tags: [catalog]
+  summary: List works
+  description: One page of works, sorted and optionally filtered by a title search.
+  x-permission: catalog.works.read
+  parameters:
+    - $ref: ../../components/parameters/Search.yaml
+    - $ref: ../../components/parameters/WorksSort.yaml
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: One page of works and the page details.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/WorkPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  operationId: createWork
+  tags: [catalog]
+  summary: Create a work
+  description: Returns the new work with its `Location` and `ETag`.
+  x-permission: catalog.works.write
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/WorkInput.yaml
+  responses:
+    '201':
+      description: The work was created.
+      headers:
+        Location:
+          $ref: ../../components/headers/Location.yaml
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Work.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

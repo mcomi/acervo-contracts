@@ -1,0 +1,43 @@
+type: object
+description: |
+  Error details (RFC 9457). Clients branch on `code` and translate it for the user; `title` and
+  `detail` are English text for developers and logs.
+required: [type, title, status, code]
+properties:
+  type:
+    type: string
+    format: uri-reference
+    maxLength: 2048
+    description: Identifies the kind of problem. `about:blank` when `code` says enough.
+    examples: [about:blank]
+  title:
+    type: string
+    maxLength: 200
+    description: Short summary of the kind of problem.
+    examples: [Not Found]
+  status:
+    type: integer
+    format: int32
+    minimum: 400
+    maximum: 599
+    description: HTTP status code, repeated for convenience.
+    examples: [404]
+  detail:
+    type: string
+    maxLength: 2000
+    description: What went wrong in this occurrence.
+    examples: [No work with this id in the organization.]
+  instance:
+    type: string
+    format: uri-reference
+    maxLength: 2048
+    description: The request path that failed.
+    examples: [/v1/catalog/works/0192f0c4-5b8e-7a1d-9c3e-2f6b8d4a1e70]
+  code:
+    $ref: ProblemCode.yaml
+  errors:
+    type: array
+    maxItems: 100
+    description: One entry per invalid field. Only present when `code` is `request.invalid`.
+    items:
+      $ref: FieldError.yaml

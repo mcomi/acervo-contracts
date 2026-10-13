@@ -1,0 +1,6 @@
+description: Seconds to wait before retrying.
+schema:
+  type: integer
+  format: int32
+  minimum: 1
+  maximum: 86400

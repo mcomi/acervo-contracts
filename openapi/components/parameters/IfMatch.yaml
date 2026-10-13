@@ -1,0 +1,7 @@
+name: If-Match
+in: header
+required: true
+description: The `ETag` from the last read. Protects against overwriting someone else's change.
+schema:
+  type: string
+  maxLength: 100

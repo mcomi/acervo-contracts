@@ -1,0 +1,10 @@
+description: No such resource in the organization.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Not Found
+      status: 404
+      code: resource.not-found

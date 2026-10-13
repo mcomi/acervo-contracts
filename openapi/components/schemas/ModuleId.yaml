@@ -1,0 +1,5 @@
+type: string
+maxLength: 50
+pattern: ^[a-z]+(-[a-z]+)*$
+description: Product module id. The same id names the module in the API, the web app and billing.
+examples: [catalog]

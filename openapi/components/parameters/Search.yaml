@@ -1,0 +1,7 @@
+name: search
+in: query
+description: Matches titles, ignoring case and accents.
+schema:
+  type: string
+  minLength: 1
+  maxLength: 200

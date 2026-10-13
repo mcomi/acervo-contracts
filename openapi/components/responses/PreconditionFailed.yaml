@@ -1,0 +1,10 @@
+description: The resource changed since it was read; read it again and retry.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Precondition Failed
+      status: 412
+      code: resource.version-mismatch

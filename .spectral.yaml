@@ -1,0 +1,94 @@
+# Lint rules for the contract. `pnpm lint` fails on errors and warnings.
+extends:
+  - spectral:oas
+  - '@stoplight/spectral-owasp-ruleset'
+
+rules:
+  # --- OWASP rules turned off, with the reason ---
+
+  # Rate limits will be enforced at the edge once hosting is decided; documenting limit headers
+  # on every response now would promise numbers nobody has chosen. 429 + Retry-After stay required.
+  owasp:api4:2023-rate-limit: off
+  # Free text (titles, notes) cannot be limited to a pattern. maxLength bounds every string and
+  # the API uses parameterized queries, which is what this rule protects against.
+  owasp:api4:2023-string-restricted: off
+  # CORS is server configuration, not part of each response's contract.
+  owasp:api8:2023-define-cors-origin: off
+
+  # --- Acervo conventions (docs/api-guidelines.md) ---
+
+  acervo-operation-id-camel-case:
+    description: operationId is camelCase, starting with a verb (listWorks, getWork).
+    severity: error
+    given: $.paths[*][get,put,post,delete,patch]
+    then:
+      field: operationId
+      function: pattern
+      functionOptions:
+        match: ^(list|get|create|replace|update|delete|search|[a-z]+)[A-Z][a-zA-Z0-9]*$
+
+  acervo-path-segments-kebab-case:
+    description: Path segments are lowercase kebab-case nouns; parameters are camelCase.
+    severity: error
+    given: $.paths
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        match: ^(/([a-z]+(-[a-z]+)*|\{[a-z][a-zA-Z0-9]*\}))+$
+
+  acervo-properties-camel-case:
+    description: Schema properties are camelCase.
+    severity: error
+    given: $..properties
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        match: ^[a-z][a-zA-Z0-9]*$
+
+  acervo-errors-are-problem-json:
+    description: 4xx and 5xx responses use application/problem+json (RFC 9457).
+    severity: error
+    given: $.paths[*][*].responses[?(@property >= 400)]
+    then:
+      field: content
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: [application/problem+json]
+
+  acervo-operation-declares-permission:
+    description: |
+      Every operation names the permission it checks in x-permission
+      (`<module>.<resource>.<action>`), or `authenticated` when signing in is enough.
+    severity: error
+    given: $.paths[*][get,put,post,delete,patch]
+    then:
+      # pattern alone skips a missing field, so check it exists first.
+      - field: x-permission
+        function: truthy
+      - field: x-permission
+        function: pattern
+        functionOptions:
+          match: ^(authenticated|[a-z]+(-[a-z]+)*(\.[a-z]+(-[a-z]+)*){2})$
+
+  acervo-no-tenant-in-requests:
+    description: The organization comes from the access token; requests never name it.
+    severity: error
+    given: $.paths[*]..parameters[*].name
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: /(tenant|organization|org)[-_]?id/i
+
+  acervo-single-module-tag:
+    description: Each operation has exactly one tag, the product module it belongs to.
+    severity: error
+    given: $.paths[*][get,put,post,delete,patch].tags
+    then:
+      function: length
+      functionOptions:
+        min: 1
+        max: 1

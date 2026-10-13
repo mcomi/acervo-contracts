@@ -1,0 +1,10 @@
+description: The access token is missing, expired or invalid.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Unauthorized
+      status: 401
+      code: auth.unauthenticated

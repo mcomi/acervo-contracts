@@ -1,0 +1,21 @@
+type: object
+required: [pointer, code]
+properties:
+  pointer:
+    type: string
+    maxLength: 500
+    description: |
+      JSON Pointer (RFC 6901) to the invalid value in the request body, or `#/query/<name>`
+      and `#/header/<name>` for parameters.
+    examples: [/title, '#/query/size']
+  code:
+    type: string
+    maxLength: 100
+    pattern: ^[a-z]+(-[a-z]+)*$
+    description: Why the value is invalid, for translated messages.
+    examples: [required, too-long, out-of-range, invalid-format, not-allowed]
+  detail:
+    type: string
+    maxLength: 500
+    description: English explanation for developers.
+    examples: [Must be at most 500 characters.]

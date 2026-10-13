@@ -1,0 +1,10 @@
+description: Unexpected error. Safe to retry reads; check before retrying writes.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Internal Server Error
+      status: 500
+      code: server.unexpected

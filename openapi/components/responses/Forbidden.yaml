@@ -1,0 +1,10 @@
+description: The user lacks the permission, or the organization's plan does not include the module.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Forbidden
+      status: 403
+      code: auth.permission-denied

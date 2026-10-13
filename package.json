@@ -1,0 +1,29 @@
+{
+  "name": "@acervo/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenAPI contract between the Acervo web app and API.",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": "22.12.0"
+  },
+  "scripts": {
+    "build": "node scripts/bundle.mjs",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint": "pnpm build && spectral lint dist/openapi.yaml --ruleset .spectral.yaml --fail-severity=warn",
+    "test": "pnpm build && node --test \"test/**/*.test.mjs\"",
+    "changeset": "changeset",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "@redocly/openapi-core": "2.62.1",
+    "@stoplight/spectral-cli": "6.17.0",
+    "@stoplight/spectral-owasp-ruleset": "2.0.1",
+    "husky": "9.1.7",
+    "prettier": "3.9.9",
+    "yaml": "2.9.1"
+  }
+}

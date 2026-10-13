@@ -1,0 +1,5 @@
+description: Version of the resource. Send it in `If-Match` to change or delete it.
+schema:
+  type: string
+  maxLength: 100
+  examples: ['"3"']

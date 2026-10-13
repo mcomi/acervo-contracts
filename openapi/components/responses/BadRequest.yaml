@@ -1,0 +1,10 @@
+description: The request is malformed or a value is invalid; see `errors`.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Bad Request
+      status: 400
+      code: request.invalid

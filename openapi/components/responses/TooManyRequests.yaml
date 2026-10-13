@@ -1,0 +1,13 @@
+description: Too many requests; wait as long as `Retry-After` says.
+headers:
+  Retry-After:
+    $ref: ../headers/RetryAfter.yaml
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/Problem.yaml
+    example:
+      type: about:blank
+      title: Too Many Requests
+      status: 429
+      code: request.rate-limited

@@ -1,0 +1,5 @@
+# Dependencies allowed (true) or denied (false) to run install scripts.
+# Review before adding new entries.
+allowBuilds:
+  # Download analytics pulled in by Spectral; it does nothing we need.
+  '@scarf/scarf': false

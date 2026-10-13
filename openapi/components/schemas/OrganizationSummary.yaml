@@ -1,0 +1,13 @@
+type: object
+required: [id, name]
+properties:
+  id:
+    type: string
+    format: uuid
+    maxLength: 36
+    readOnly: true
+    examples: [0192f0c4-0000-7a00-8b00-000000000001]
+  name:
+    type: string
+    maxLength: 200
+    examples: [Filmoteca Ejemplo]

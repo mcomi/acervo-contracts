@@ -1,0 +1,46 @@
+openapi: 3.1.1
+info:
+  title: Acervo API
+  # The bundle replaces this with the package version, which Changesets bumps on release.
+  version: 0.0.0
+  summary: Management of audiovisual archives as a service.
+  description: |
+    Contract between the Acervo web app and API. Conventions (errors, pagination, concurrency,
+    tenancy, naming) are in `docs/api-guidelines.md` in the contracts repo.
+
+    Every request acts on the organization of the signed-in user, taken from the access token.
+    No path, parameter or body names an organization.
+  contact:
+    name: Acervo team
+    url: https://github.com/mcomi/acervo-contracts
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
+servers:
+  - url: https://api.acervo.example/v1
+    description: Production (placeholder until hosting is decided)
+    x-internal: false
+security:
+  - bearerAuth: []
+tags:
+  - name: platform
+    description: Session, organizations, users and subscriptions.
+  - name: catalog
+    description: Works and their variants, manifestations and items (FIAF model).
+paths:
+  /me:
+    $ref: paths/platform/me.yaml
+  /catalog/works:
+    $ref: paths/catalog/works.yaml
+  /catalog/works/{workId}:
+    $ref: paths/catalog/work.yaml
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Access token issued by the identity provider (Keycloak, OpenID Connect). Tokens are
+        short-lived JWTs validated following RFC8725. The token carries the user and the
+        organization; the API derives entitlements and permissions from them.

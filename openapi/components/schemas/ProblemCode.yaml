@@ -1,0 +1,16 @@
+type: string
+maxLength: 100
+pattern: ^[a-z]+(\.[a-z]+(-[a-z]+)*)+$
+description: |
+  Stable, machine-readable error code: `<module or area>.<problem>`. Codes never change
+  meaning; new codes may be added at any time, so clients must handle unknown ones.
+examples:
+  - request.invalid
+  - auth.unauthenticated
+  - auth.permission-denied
+  - auth.module-not-entitled
+  - resource.not-found
+  - resource.version-mismatch
+  - resource.version-required
+  - request.rate-limited
+  - server.unexpected

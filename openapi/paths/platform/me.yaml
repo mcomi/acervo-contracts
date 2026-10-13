@@ -1,0 +1,23 @@
+get:
+  operationId: getMe
+  tags: [platform]
+  summary: Get the signed-in user and what they can access
+  description: |
+    The web app builds its menus and screens from `entitlements` and `permissions`. Hiding a
+    screen is a convenience only: the API checks the permission on every call.
+  x-permission: authenticated
+  responses:
+    '200':
+      description: The signed-in user, their organization and their access.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Me.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

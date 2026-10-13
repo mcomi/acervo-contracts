@@ -1,0 +1,99 @@
+parameters:
+  - $ref: ../../components/parameters/WorkId.yaml
+get:
+  operationId: getWork
+  tags: [catalog]
+  summary: Get a work
+  description: Returns the work and its `ETag`; send it back in `If-Match` to change the work.
+  x-permission: catalog.works.read
+  responses:
+    '200':
+      description: The work.
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Work.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+put:
+  operationId: replaceWork
+  tags: [catalog]
+  summary: Replace a work
+  description: |
+    Replaces every editable field. Fields left out are cleared. Fails with 412 if someone else
+    changed the work since it was read.
+  x-permission: catalog.works.write
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/WorkInput.yaml
+  responses:
+    '200':
+      description: The updated work.
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Work.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+delete:
+  operationId: deleteWork
+  tags: [catalog]
+  summary: Delete a work
+  description: Fails with 412 if someone else changed the work since it was read.
+  x-permission: catalog.works.delete
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  responses:
+    '204':
+      description: The work was deleted.
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

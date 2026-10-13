@@ -1,0 +1,35 @@
+type: object
+description: Editable fields of a work. Unknown fields are rejected.
+additionalProperties: false
+required: [title]
+properties:
+  title:
+    type: string
+    minLength: 1
+    maxLength: 500
+    description: Title the work is catalogued under.
+    examples: [Los olvidados]
+  originalTitle:
+    type: string
+    minLength: 1
+    maxLength: 500
+    description: Title in the original language, when it differs.
+    examples: [The Young and the Damned]
+  productionYear:
+    type: integer
+    format: int32
+    minimum: 1870
+    maximum: 2100
+    examples: [1950]
+  countries:
+    type: array
+    maxItems: 20
+    uniqueItems: true
+    description: Production countries (ISO 3166-1 alpha-2).
+    items:
+      $ref: CountryCode.yaml
+    examples: [[MX]]
+  notes:
+    type: string
+    maxLength: 10000
+    description: Free cataloguing notes.

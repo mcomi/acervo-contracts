@@ -1,0 +1,12 @@
+node_modules/
+dist/
+# Downloaded generator jars and generated smoke-test code.
+.cache/
+*.log
+.DS_Store
+
+# Environment files: only the committed examples are allowed.
+.env
+.env.*
+!.env.example
+!.env.*.example

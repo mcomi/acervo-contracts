@@ -1,0 +1,63 @@
+# Breaks each Acervo rule once, so test/rules.test.mjs can prove the rules fire.
+openapi: 3.1.1
+info:
+  title: Invalid contract
+  version: 0.0.0
+paths:
+  /catalog/works:
+    get:
+      operationId: list_works
+      tags: [catalog]
+      x-permission: catalog.works.read
+      responses:
+        '200':
+          description: OK
+  /catalog/workItems:
+    get:
+      operationId: listWorkItems
+      tags: [catalog]
+      x-permission: catalog.works.read
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  work_title:
+                    type: string
+  /catalog/works/{workId}:
+    get:
+      operationId: getWork
+      tags: [catalog]
+      x-permission: catalog.works.read
+      parameters:
+        - name: workId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tenantId
+          in: query
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      operationId: deleteWork
+      tags: [catalog, platform]
+      parameters:
+        - name: workId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
