@@ -38,5 +38,5 @@ changesets into a **Release: version packages** pull request (version in `packag
 `openapi.yaml` attached: that bundle is the file consumers copy.
 
 The repo setting _Settings → Actions → General → Allow GitHub Actions to create and approve pull
-requests_ must be on. Pull requests opened by the workflow do not trigger CI by themselves; they only
-change the version and changelog.
+requests_ must be on. The release pull request only changes the version and changelog, so CI skips
+its changeset check.
