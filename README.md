@@ -8,7 +8,7 @@ code from it: Spring interfaces in the API, a typed client, query hooks and mock
 
 ## Requirements
 
-Node 22.12 (`.nvmrc`), pnpm 12 and Java 11 or later for `pnpm test`.
+Node 24.21 (`.nvmrc`), pnpm 12 and Java 11 or later for `pnpm test`.
 
 ## Commands
 
