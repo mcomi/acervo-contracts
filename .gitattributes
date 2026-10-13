@@ -1,0 +1,2 @@
+# LF everywhere, also on Windows checkouts: Prettier and the hooks expect it.
+* text=auto eol=lf
