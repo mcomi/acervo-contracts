@@ -25,7 +25,7 @@ and that costs nothing to host.
 - **Breaking changes** are detected in CI with oasdiff against `main`. It runs with uploads and PR
   comments turned off so the contract does not leave CI.
 - **Releases** use Changesets: the version bump and changelog come from the changeset files, and
-  each release is a git tag (`@acervo/contracts@x.y.z`).
+  each release is a git tag (`vX.Y.Z`) and a GitHub release with the bundle attached.
 - **Distribution**: each consumer commits a copy of the released `dist/openapi.yaml` (the web app
   in its API client package, the API in its resources) and generates code from it. Builds stay
   reproducible offline and in CI, need no package registry or tokens, and the copy's

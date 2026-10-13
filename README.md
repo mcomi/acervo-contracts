@@ -29,3 +29,14 @@ Node 22.12 (`.nvmrc`), pnpm 12 and Java 11 or later for `pnpm test`.
 4. Add a changeset: minor for new endpoints or fields, major (minor while on 0.x) for breaking
    changes, plus the `breaking-change` label on the pull request.
 5. Front and back both review. After release, each consumer updates its copy of the bundle.
+
+## Releasing
+
+Nobody bumps versions by hand. On every push to `main`, the Release workflow collects the pending
+changesets into a **Release: version packages** pull request (version in `package.json` and
+`CHANGELOG.md`). Merging it tags `vX.Y.Z` and publishes a GitHub release with
+`openapi.yaml` attached: that bundle is the file consumers copy.
+
+The repo setting _Settings → Actions → General → Allow GitHub Actions to create and approve pull
+requests_ must be on. Pull requests opened by the workflow do not trigger CI by themselves; they only
+change the version and changelog.
