@@ -1,0 +1,13 @@
+type: object
+description: Verified current member identity, derived by the server.
+required:
+  - id
+  - displayName
+properties:
+  id:
+    type: string
+    maxLength: 36
+    format: uuid
+  displayName:
+    type: string
+    maxLength: 200

@@ -1,0 +1,57 @@
+post:
+  operationId: registerExistingHolding
+  tags:
+    - custody
+  summary: Register existing material
+  description: An authorized operator registers and confirms an already stored
+    container in one transaction. Requires custody entitlement and
+    custody.holdings.register, without an area-head check. No new accession,
+    work, item, movement or intake-statistics increment. Validate active
+    type/area and exact tenant niche; unknown, cross-tenant or ineligible IDs
+    produce request.invalid with field code not-allowed. Persist container,
+    current placement, baseline, audit and successful idempotency result
+    atomically. Concurrent same-key requests replay one success, including
+    omitted/generated code. A distinct key with an existing normalized supplied
+    code returns the typed code-taken conflict. Generated-code collisions
+    advance the configured counter instead of overwriting old labels.
+  x-permission: custody.holdings.register
+  parameters:
+    - $ref: ../../components/parameters/IdempotencyKey.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/ExistingHoldingInput.yaml
+  responses:
+    '201':
+      description: Registered container; a same-key replay returns the same original
+        successful response.
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+        Location:
+          $ref: ../../components/headers/Location.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Container.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '409':
+      description: Primary code taken, or an idempotency key reused with different
+        input. Branch on the stable code.
+      content:
+        application/problem+json:
+          schema:
+            oneOf:
+              - $ref: ../../components/schemas/ContainerCodeTakenProblem.yaml
+              - $ref: ../../components/schemas/IdempotencyKeyReusedProblem.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

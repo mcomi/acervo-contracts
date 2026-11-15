@@ -1,0 +1,40 @@
+get:
+  operationId: lookupContainer
+  tags:
+    - locations
+  summary: Find a container by code
+  description: Exact normalized primary-code match in the current organization.
+    The supplied code remains a query value so slashes and other reserved
+    characters can be URL encoded. Not a fuzzy search. Requires locations
+    entitlement.
+  x-permission: locations.containers.read
+  parameters:
+    - name: code
+      in: query
+      required: true
+      schema:
+        type: string
+        maxLength: 100
+        minLength: 1
+  responses:
+    '200':
+      description: The matching container.
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Container.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

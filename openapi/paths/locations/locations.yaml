@@ -1,0 +1,37 @@
+get:
+  operationId: listStorageLocations
+  tags:
+    - locations
+  summary: List storage niches
+  description: Only active configured terminal storage positions that accept
+    containers. Search matches a literal substring of code, name or path; sort
+    by code then id. Requires locations entitlement.
+  x-permission: locations.containers.read
+  parameters:
+    - name: search
+      in: query
+      description: Literal case-insensitive substring, never a wildcard or regular
+        expression.
+      schema:
+        type: string
+        maxLength: 200
+        minLength: 1
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: List storage niches
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/StorageLocationPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

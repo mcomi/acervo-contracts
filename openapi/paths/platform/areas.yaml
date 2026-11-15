@@ -1,0 +1,28 @@
+get:
+  operationId: listAreas
+  tags:
+    - platform
+  summary: List active areas
+  description: 'Current organization only, sorted by code then id. No canConfirm
+    or area-head role: operators register with the registration grant.'
+  x-permission: authenticated
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: List active areas
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/AreaPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

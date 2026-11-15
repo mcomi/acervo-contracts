@@ -35,6 +35,10 @@ tags:
     description: Inventory cycles and statistics.
   - name: lab
     description: Digitization and restoration statistics.
+  - name: locations
+    description: Physical containers, configured types and storage positions.
+  - name: custody
+    description: Baseline custody observations and subsequent custody history.
 paths:
   /me:
     $ref: paths/platform/me.yaml
@@ -48,6 +52,22 @@ paths:
     $ref: paths/inventory/statistics.yaml
   /lab/statistics:
     $ref: paths/lab/statistics.yaml
+  /platform/areas:
+    $ref: paths/platform/areas.yaml
+  /locations/locations:
+    $ref: paths/locations/locations.yaml
+  /locations/container-types:
+    $ref: paths/locations/container-types.yaml
+  /locations/containers:
+    $ref: paths/locations/containers.yaml
+  /locations/containers/lookup:
+    $ref: paths/locations/container-lookup.yaml
+  /locations/containers/{containerId}:
+    $ref: paths/locations/container.yaml
+  /custody/existing-holdings:
+    $ref: paths/custody/existing-holdings.yaml
+  /custody/containers/{containerId}/history:
+    $ref: paths/custody/container-history.yaml
 components:
   securitySchemes:
     bearerAuth:

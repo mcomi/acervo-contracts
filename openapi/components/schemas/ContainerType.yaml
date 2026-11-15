@@ -1,0 +1,17 @@
+type: object
+description: A configured active physical container type.
+required:
+  - id
+  - code
+  - name
+properties:
+  id:
+    type: string
+    maxLength: 36
+    format: uuid
+  code:
+    type: string
+    maxLength: 100
+  name:
+    type: string
+    maxLength: 200

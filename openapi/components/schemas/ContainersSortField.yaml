@@ -1,0 +1,10 @@
+type: string
+maxLength: 30
+description: Sort containers; ties use id ascending. Default is most recently
+  registered first.
+enum:
+  - code
+  - -code
+  - registeredAt
+  - -registeredAt
+default: -registeredAt

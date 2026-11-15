@@ -1,0 +1,6 @@
+type: string
+maxLength: 40
+description: Baseline observation begins present-day tracking, not a
+  reconstructed historical receipt.
+enum:
+  - baseline-observation

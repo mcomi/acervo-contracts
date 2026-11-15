@@ -1,0 +1,58 @@
+type: object
+description: An individually identified physical container. It may hold unknown
+  content, multiple titles or part of one copy. No work/item/accession is
+  required. observedAt and observedBy describe the initial baseline in this
+  slice.
+required:
+  - id
+  - code
+  - containerType
+  - currentLocation
+  - responsibleArea
+  - identificationStatus
+  - origin
+  - observedAt
+  - observedBy
+  - registeredAt
+properties:
+  id:
+    type: string
+    maxLength: 36
+    format: uuid
+  code:
+    type: string
+    maxLength: 100
+    description: Primary visible code, preserved exactly as captured or generated
+      using the organization configuration.
+    minLength: 1
+  containerType:
+    $ref: ContainerType.yaml
+  currentLocation:
+    $ref: StorageLocation.yaml
+  responsibleArea:
+    $ref: Area.yaml
+  identificationStatus:
+    $ref: IdentificationStatus.yaml
+  origin:
+    $ref: ContainerOrigin.yaml
+  observedAt:
+    type: string
+    maxLength: 40
+    format: date-time
+    readOnly: true
+  observedBy:
+    $ref: ObservedBy.yaml
+  registeredAt:
+    type: string
+    maxLength: 40
+    format: date-time
+    readOnly: true
+  labelTranscription:
+    type: string
+    maxLength: 500
+  externalReference:
+    type: string
+    maxLength: 200
+  notes:
+    type: string
+    maxLength: 10000

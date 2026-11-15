@@ -1,0 +1,5 @@
+type: string
+maxLength: 30
+description: How this container first entered tracking; never a historical receipt date.
+enum:
+  - existing-holdings

@@ -1,0 +1,7 @@
+name: containerId
+in: path
+required: true
+schema:
+  type: string
+  maxLength: 36
+  format: uuid

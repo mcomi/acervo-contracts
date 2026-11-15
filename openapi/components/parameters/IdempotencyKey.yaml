@@ -1,0 +1,13 @@
+name: Idempotency-Key
+in: header
+required: true
+description: Client UUID created once per logical registration, reused for
+  transport retries. Scoped to verified organization/member/operation. Same key
+  and validated input replay the same successful 201 resource, Location and
+  ETag; different input returns 409 request.idempotency-key-reused. Successful
+  keys persist in this slice with no expiration feature. Failed requests leave
+  no success reservation. Current authorization is rechecked on replay.
+schema:
+  type: string
+  maxLength: 36
+  format: uuid

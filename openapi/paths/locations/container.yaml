@@ -1,0 +1,33 @@
+get:
+  operationId: getContainer
+  tags:
+    - locations
+  summary: Get a container
+  description: Returns current placement and initial observation metadata.
+    Requires locations entitlement.
+  x-permission: locations.containers.read
+  parameters: []
+  responses:
+    '200':
+      description: The container.
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Container.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+parameters:
+  - $ref: ../../components/parameters/ContainerId.yaml

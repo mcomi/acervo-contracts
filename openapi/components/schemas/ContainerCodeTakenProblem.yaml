@@ -1,0 +1,58 @@
+type: object
+description: A distinct registration key conflicts with an existing primary code
+  in the current organization. The registration permission authorizes disclosure
+  of this same-tenant identifier; web only offers detail navigation when the
+  user also has container read permission.
+required:
+  - type
+  - title
+  - status
+  - code
+  - existingContainerId
+properties:
+  type:
+    type: string
+    format: uri-reference
+    maxLength: 2048
+    description: Identifies the kind of problem. `about:blank` when `code` says enough.
+    examples:
+      - about:blank
+  title:
+    type: string
+    maxLength: 200
+    description: Short summary of the kind of problem.
+    examples:
+      - Not Found
+  status:
+    type: integer
+    format: int32
+    minimum: 409
+    maximum: 409
+  detail:
+    type: string
+    maxLength: 2000
+    description: What went wrong in this occurrence.
+    examples:
+      - No work with this id in the organization.
+  instance:
+    type: string
+    format: uri-reference
+    maxLength: 2048
+    description: The request path that failed.
+    examples:
+      - /v1/catalog/works/0192f0c4-5b8e-7a1d-9c3e-2f6b8d4a1e70
+  code:
+    type: string
+    maxLength: 100
+    enum:
+      - locations.container-code-taken
+  errors:
+    type: array
+    maxItems: 100
+    description: One entry per invalid field. Only present when `code` is `request.invalid`.
+    items:
+      $ref: FieldError.yaml
+  existingContainerId:
+    type: string
+    maxLength: 36
+    format: uuid

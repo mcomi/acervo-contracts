@@ -1,0 +1,38 @@
+get:
+  operationId: listContainerHistory
+  tags:
+    - custody
+  summary: List container custody history
+  description: Requires custody and locations entitlements and
+    locations.containers.read; being authorized to list containers without
+    custody does not grant custody history access. Current organization only.
+    Oldest observation first, ties by id. This slice returns the initial
+    baseline only.
+  x-permission: locations.containers.read
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: List container custody history
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CustodyEventPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+  x-required-entitlements:
+    - custody
+    - locations
+parameters:
+  - $ref: ../../components/parameters/ContainerId.yaml

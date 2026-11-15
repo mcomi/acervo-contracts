@@ -1,0 +1,39 @@
+type: object
+description: Immutable current-tenant custody observation. All identities/times
+  are server-derived.
+required:
+  - id
+  - containerId
+  - kind
+  - observedAt
+  - recordedAt
+  - observedBy
+  - location
+  - responsibleArea
+properties:
+  id:
+    type: string
+    maxLength: 36
+    format: uuid
+  containerId:
+    type: string
+    maxLength: 36
+    format: uuid
+  kind:
+    $ref: CustodyEventKind.yaml
+  observedAt:
+    type: string
+    maxLength: 40
+    format: date-time
+    readOnly: true
+  recordedAt:
+    type: string
+    maxLength: 40
+    format: date-time
+    readOnly: true
+  observedBy:
+    $ref: ObservedBy.yaml
+  location:
+    $ref: StorageLocation.yaml
+  responsibleArea:
+    $ref: Area.yaml

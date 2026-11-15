@@ -1,0 +1,42 @@
+type: object
+description: Register an actually observed, already stored container at an exact
+  niche. Omitted code is generated with the organization prefix/digits/counter
+  (initial seed MAT- and six digits); this is configurable, not a UUID or a
+  promise of gapless numbering. Existing codes remain verbatim. Matching is
+  server-authoritative, ignoring case, whitespace and ASCII hyphens;
+  normalized-empty codes are invalid. No check-digit validation in this slice.
+  Tenant, actor, observation time and identification state cannot be supplied.
+required:
+  - containerTypeId
+  - locationId
+  - responsibleAreaId
+properties:
+  code:
+    type: string
+    maxLength: 100
+    minLength: 1
+  containerTypeId:
+    type: string
+    maxLength: 36
+    format: uuid
+  locationId:
+    type: string
+    maxLength: 36
+    format: uuid
+  responsibleAreaId:
+    type: string
+    maxLength: 36
+    format: uuid
+  labelTranscription:
+    type: string
+    maxLength: 500
+    minLength: 1
+  externalReference:
+    type: string
+    maxLength: 200
+    minLength: 1
+  notes:
+    type: string
+    maxLength: 10000
+    minLength: 1
+additionalProperties: false

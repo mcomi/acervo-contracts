@@ -88,6 +88,8 @@ describe('Spring generator', () => {
         assert.ok(existsSync(new URL('CatalogApi.java', sources)));
         assert.ok(existsSync(new URL('InventoryApi.java', sources)));
         assert.ok(existsSync(new URL('LabApi.java', sources)));
+        assert.ok(existsSync(new URL('LocationsApi.java', sources)));
+        assert.ok(existsSync(new URL('CustodyApi.java', sources)));
     });
 
     it('should generate Jackson 3 databind annotations for Spring Boot 4', async () => {
@@ -109,5 +111,15 @@ describe('Spring generator', () => {
             catalogApi.match(/@RequestHeader\(value = "If-Match", required = true\)/g)?.length,
             2,
         );
+    });
+    it('should generate a required idempotency header and typed conflict models', async () => {
+        const custody = await readFile(new URL('CustodyApi.java', sources), 'utf8');
+        assert.match(custody, /@RequestHeader\(value = "Idempotency-Key", required = true\)/);
+        const conflict = await readFile(
+            new URL('model/ContainerCodeTakenProblem.java', sources),
+            'utf8',
+        );
+        assert.match(conflict, /UUID existingContainerId/);
+        assert.ok(existsSync(new URL('model/IdempotencyKeyReusedProblem.java', sources)));
     });
 });

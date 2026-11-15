@@ -1,0 +1,7 @@
+type: string
+maxLength: 20
+description: Content identification status. Registration produces pending; this
+  slice has no identification update operation.
+enum:
+  - pending
+  - identified
