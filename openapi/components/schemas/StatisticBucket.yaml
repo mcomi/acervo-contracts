@@ -1,0 +1,19 @@
+type: object
+required:
+  - key
+  - count
+properties:
+  key:
+    type: string
+    maxLength: 100
+    description: Stable category code, translated by the client.
+    examples:
+      - Example
+  count:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Number of records in this category.
+    examples:
+      - 120

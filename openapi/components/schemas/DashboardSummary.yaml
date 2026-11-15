@@ -1,0 +1,64 @@
+type: object
+required:
+  - generatedAt
+properties:
+  generatedAt:
+    type: string
+    format: date-time
+    maxLength: 35
+    examples:
+      - 2026-11-14T12:00:00Z
+  worksCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: All works; requires catalog.works.read and catalog entitlement.
+    examples:
+      - 120
+  countries:
+    type: array
+    maxItems: 250
+    items:
+      $ref: CountryStatistic.yaml
+  accessionsCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: All accessions; requires accessions.statistics.read.
+    examples:
+      - 120
+  containersCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: All containers; requires locations.statistics.read.
+    examples:
+      - 120
+  itemsCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: All items; requires catalog.statistics.read.
+    examples:
+      - 120
+  itemKinds:
+    type: array
+    maxItems: 100
+    items:
+      $ref: StatisticBucket.yaml
+  filmBases:
+    type: array
+    maxItems: 100
+    items:
+      $ref: StatisticBucket.yaml
+  intake:
+    type: array
+    maxItems: 36
+    items:
+      $ref: MonthlyIntake.yaml
+  control:
+    $ref: DashboardControl.yaml

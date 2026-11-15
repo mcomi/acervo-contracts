@@ -1,0 +1,37 @@
+type: object
+required:
+  - name
+  - containersCount
+  - documentedCount
+  - description
+properties:
+  name:
+    type: string
+    maxLength: 200
+    description: Organization-configured collection name.
+    examples:
+      - Example
+  containersCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Active physical containers in this collection. Collections
+      partition this response cohort.
+    examples:
+      - 120
+  documentedCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Containers satisfying the same minimum intake profile, at most
+      containersCount.
+    examples:
+      - 120
+  description:
+    type: string
+    maxLength: 200
+    description: Collection description supplied by the organization.
+    examples:
+      - Example

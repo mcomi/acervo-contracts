@@ -5,6 +5,10 @@ OpenAPI 3.1 contract shared by `../web` (React) and `../api` (Java, Spring Boot 
 changesets, CI): `../web/docs/engineering-conventions.md`; API design rules:
 `docs/api-guidelines.md`; repo decisions: `docs/adr/`.
 
+Read `../docs/agent-handoff.md` and `../docs/work-log.md` before taking a task.
+For dashboard changes, read `../docs/backend-dashboard-plan.md`: live scope/evidence metadata and
+record drill-downs are still pending agreement; the current preview contract is not a full backend.
+
 ## Layout
 
 - `openapi/openapi.yaml` — root: info, servers, security, tags and the path list.

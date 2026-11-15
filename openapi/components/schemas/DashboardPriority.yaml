@@ -1,0 +1,47 @@
+type: object
+required:
+  - kind
+  - count
+  - sampleReference
+  - owner
+  - evidence
+  - isDemo
+properties:
+  kind:
+    type: string
+    maxLength: 40
+    enum:
+      - acknowledgement
+      - condition-review
+      - location-confirmation
+  count:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Distinct open events of this kind. Events are assigned one primary
+      kind and counted once.
+    examples:
+      - 120
+  sampleReference:
+    type: string
+    maxLength: 80
+    description: Fictional sample reference in demo mode; a representative record,
+      not the complete event list.
+    examples:
+      - Example
+  owner:
+    type: string
+    maxLength: 200
+    description: Responsible organizational area.
+    examples:
+      - Example
+  evidence:
+    type: string
+    maxLength: 200
+    description: Evidence underlying the priority. Not a prediction or diagnosis.
+    examples:
+      - Example
+  isDemo:
+    type: boolean
+    description: True when this entry is synthetic; preview must be labelled as such.

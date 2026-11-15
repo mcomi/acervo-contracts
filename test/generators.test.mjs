@@ -85,6 +85,8 @@ describe('Spring generator', () => {
     it('should generate one interface per module tag', () => {
         assert.ok(existsSync(new URL('PlatformApi.java', sources)));
         assert.ok(existsSync(new URL('CatalogApi.java', sources)));
+        assert.ok(existsSync(new URL('InventoryApi.java', sources)));
+        assert.ok(existsSync(new URL('LabApi.java', sources)));
     });
 
     it('should type sort parameters as enums', async () => {

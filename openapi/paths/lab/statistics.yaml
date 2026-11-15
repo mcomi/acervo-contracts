@@ -1,0 +1,45 @@
+get:
+  operationId: getLabStatistics
+  tags:
+    - lab
+  summary: Get lab dashboard statistics
+  description: Annual lab output. Requires lab entitlement. Extension filters
+    restoredWorks and restoredItems only; other metrics cover the entire year.
+  x-permission: lab.statistics.read
+  responses:
+    '200':
+      description: Permitted organization statistics.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/LabStatistics.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+  parameters:
+    - name: year
+      in: query
+      required: true
+      description: Calendar year in UTC.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1870
+        maximum: 9999
+    - name: extension
+      in: query
+      required: false
+      description: Output extension for restoration counts; omitted means all formats.
+      schema:
+        type: string
+        maxLength: 10
+        pattern: ^[a-z0-9]+$
+        examples:
+          - dpx

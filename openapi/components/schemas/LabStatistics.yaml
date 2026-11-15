@@ -1,0 +1,85 @@
+type: object
+required:
+  - generatedAt
+  - year
+  - hours
+  - frames
+  - worksCount
+  - logicalBytes
+  - restoredWorks
+  - restoredItems
+  - frameBases
+  - frameGauges
+properties:
+  generatedAt:
+    type: string
+    format: date-time
+    maxLength: 35
+    examples:
+      - 2026-11-14T12:00:00Z
+  year:
+    type: integer
+    format: int32
+    minimum: 1870
+    maximum: 9999
+    examples:
+      - 2026
+  hours:
+    type: number
+    format: double
+    minimum: 0
+    maximum: 1000000000
+    description: Digitized hours during this year, unaffected by extension.
+    examples:
+      - 120.5
+  frames:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Scanned frames during this year.
+    examples:
+      - 120
+  worksCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Distinct digitized works during this year.
+    examples:
+      - 120
+  logicalBytes:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Logical output bytes, excluding replicas; does not establish
+      preservation coverage.
+    examples:
+      - 120
+  restoredWorks:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Distinct restored works in this year filtered by extension.
+    examples:
+      - 120
+  restoredItems:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Restored items in this year filtered by extension.
+    examples:
+      - 120
+  frameBases:
+    type: array
+    maxItems: 100
+    items:
+      $ref: StatisticBucket.yaml
+  frameGauges:
+    type: array
+    maxItems: 100
+    items:
+      $ref: StatisticBucket.yaml

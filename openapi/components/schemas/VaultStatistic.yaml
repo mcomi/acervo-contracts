@@ -1,0 +1,37 @@
+type: object
+required:
+  - name
+  - containersCount
+  - totalLocations
+  - inventoriedLocations
+properties:
+  name:
+    type: string
+    maxLength: 100
+    description: Organization-configured vault name.
+    examples:
+      - Example
+  containersCount:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Containers inventoried during the stated cycle.
+    examples:
+      - 120
+  totalLocations:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Countable storage positions in this vault.
+    examples:
+      - 120
+  inventoriedLocations:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Positions checked in the cycle, at most totalLocations.
+    examples:
+      - 120

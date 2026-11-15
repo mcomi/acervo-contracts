@@ -1,0 +1,33 @@
+get:
+  operationId: getDashboard
+  tags:
+    - platform
+  summary: Get platform dashboard statistics
+  description: Organization overview. Omit each unauthorized field, never return a
+    fake zero. Countries and worksCount require catalog.works.read; itemsCount,
+    itemKinds and filmBases require catalog.statistics.read; accessionsCount and
+    intake require accessions.statistics.read; containersCount requires
+    locations.statistics.read. Each field also requires the corresponding module
+    entitlement. Country counts overlap for coproductions; no exclusive Others
+    category is implied. Control is omitted without locations.statistics.read
+    and locations entitlement. Each control field and priority kind is further
+    permission-filtered as described by DashboardControl. Missing optional
+    fields mean unavailable, not zero.
+  x-permission: authenticated
+  responses:
+    '200':
+      description: Permitted organization statistics.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/DashboardSummary.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

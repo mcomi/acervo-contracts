@@ -1,0 +1,25 @@
+get:
+  operationId: getInventoryStatistics
+  tags:
+    - inventory
+  summary: Get inventory dashboard statistics
+  description: Inventory cycle statistics. Requires inventory entitlement; returns
+    403 when not entitled or permitted.
+  x-permission: inventory.statistics.read
+  responses:
+    '200':
+      description: Permitted organization statistics.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/InventoryStatistics.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

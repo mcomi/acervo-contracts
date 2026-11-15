@@ -1,0 +1,28 @@
+type: object
+required:
+  - year
+  - month
+  - count
+properties:
+  year:
+    type: integer
+    format: int32
+    minimum: 1870
+    maximum: 9999
+    examples:
+      - 2026
+  month:
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 12
+    examples:
+      - 1
+  count:
+    type: integer
+    format: int64
+    minimum: 0
+    maximum: 9007199254740991
+    description: Containers received in this month. Missing months have not been observed.
+    examples:
+      - 120
