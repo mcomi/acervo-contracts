@@ -56,6 +56,7 @@ before(async () => {
             [
                 'interfaceOnly=true',
                 'useSpringBoot4=true',
+                'useJackson3=true',
                 'useTags=true',
                 'openApiNullable=false',
                 'skipDefaultInterface=true',
@@ -87,6 +88,12 @@ describe('Spring generator', () => {
         assert.ok(existsSync(new URL('CatalogApi.java', sources)));
         assert.ok(existsSync(new URL('InventoryApi.java', sources)));
         assert.ok(existsSync(new URL('LabApi.java', sources)));
+    });
+
+    it('should generate Jackson 3 databind annotations for Spring Boot 4', async () => {
+        const model = await readFile(new URL('model/Work.java', sources), 'utf8');
+        assert.ok(model.includes('tools.jackson.databind.annotation.JsonDeserialize'));
+        assert.ok(!model.includes('com.fasterxml.jackson.databind'));
     });
 
     it('should type sort parameters as enums', async () => {
