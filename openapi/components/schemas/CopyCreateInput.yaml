@@ -1,0 +1,21 @@
+type: object
+description: Register a concrete exemplar. Format and optional element type must be active and match
+  the chosen family and term kind. Source must be an existing copy of the same active work, from any
+  family. Omitted optional fields must not be null.
+required:
+  - family
+  - formatId
+properties:
+  family:
+    $ref: ./CarrierFamily.yaml
+  formatId: &a1
+    type: string
+    format: uuid
+    maxLength: 36
+  elementTypeId: *a1
+  sourceCopyId: *a1
+  notes:
+    type: string
+    minLength: 1
+    maxLength: 10000
+additionalProperties: false

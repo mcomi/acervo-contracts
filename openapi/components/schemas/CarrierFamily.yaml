@@ -1,0 +1,7 @@
+type: string
+maxLength: 8
+enum:
+  - film
+  - magnetic
+  - optical
+  - digital

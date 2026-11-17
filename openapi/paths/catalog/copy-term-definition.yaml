@@ -1,0 +1,85 @@
+parameters:
+  - name: termId
+    in: path
+    required: true
+    description: Resource ID in the session organization.
+    schema:
+      type: string
+      format: uuid
+      maxLength: 36
+get:
+  operationId: getCopyTermDefinition
+  tags:
+    - catalog
+  summary: Get a copy vocabulary definition
+  description: Includes inactive terms; return the current ETag.
+  x-permission: catalog.copy-vocabularies.manage
+  x-required-entitlements:
+    - catalog
+  responses:
+    '200':
+      description: Term definition
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CopyTerm.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+put:
+  operationId: replaceCopyTermDefinition
+  tags:
+    - catalog
+  summary: Replace editable copy vocabulary fields
+  description:
+    Require If-Match. Edit name and activity without changing copy identity or links. Audit
+    before/after; no deletion.
+  x-permission: catalog.copy-vocabularies.manage
+  x-required-entitlements:
+    - catalog
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/CopyTermUpdateInput.yaml
+  responses:
+    '200':
+      description: Updated definition
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CopyTerm.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

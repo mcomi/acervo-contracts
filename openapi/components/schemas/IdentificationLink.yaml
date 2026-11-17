@@ -1,0 +1,18 @@
+type: object
+description: An active identification of a copy in a physical container. At most one active link per
+  copy/container pair; partLabel can describe more than one part. No location of digital files is
+  implied.
+required:
+  - id
+  - copy
+properties:
+  id:
+    type: string
+    format: uuid
+    maxLength: 36
+  copy:
+    $ref: ./CopySummary.yaml
+  partLabel:
+    type: string
+    minLength: 1
+    maxLength: 200

@@ -1,0 +1,40 @@
+parameters:
+  - $ref: ../../components/parameters/ContainerId.yaml
+get:
+  operationId: listContainerIdentificationLinks
+  tags:
+    - custody
+  summary: List identified contents of a container
+  description: Active links only, ordered by link id. A container may hold copies from different
+    works, including digital copies on a physical LTO. Archived works remain visible only as scoped
+    identification context.
+  x-permission: custody.identifications.read
+  x-required-entitlements:
+    - custody
+    - locations
+    - catalog
+  x-additional-permissions:
+    - locations.containers.read
+    - catalog.copies.read
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: Identified contents
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/IdentificationLinkPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

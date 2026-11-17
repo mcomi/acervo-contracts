@@ -1,0 +1,86 @@
+parameters:
+  - $ref: ../../components/parameters/WorkId.yaml
+get:
+  operationId: listWorkCopies
+  tags:
+    - catalog
+  summary: List copies of a work
+  description: Sort by registeredAt descending then id ascending. Archived or foreign work is not
+    found. No physical or digital location is inferred.
+  x-permission: catalog.copies.read
+  x-required-entitlements:
+    - catalog
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: Work copies
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CatalogCopyPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  operationId: createWorkCopy
+  tags:
+    - catalog
+  summary: Register a copy of a work
+  description: Requires copy read plus copy write. Create under an active work. Use stable UUID
+    Idempotency-Key scoped to tenant/member/operation; same key/body/work replays original 201 body,
+    Location and ETag, different input returns 409. Recheck authorization on replay. Validate active
+    vocabulary/source on fresh writes; record audit in the same transaction.
+  x-permission: catalog.copies.write
+  x-required-entitlements:
+    - catalog
+  x-additional-permissions:
+    - catalog.copies.read
+  parameters:
+    - $ref: ../../components/parameters/IdempotencyKey.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/CopyCreateInput.yaml
+  responses:
+    '201':
+      description: Registered copy
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+        Location:
+          $ref: ../../components/headers/Location.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CatalogCopy.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '409':
+      description: request.idempotency-key-reused; no replay details disclosed.
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

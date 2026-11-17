@@ -1,0 +1,13 @@
+type: object
+description: Versioned identification aggregate only. No other container data is versioned by this
+  ETag. Identified iff at least one current active link remains.
+required:
+  - containerId
+  - status
+properties:
+  containerId:
+    type: string
+    format: uuid
+    maxLength: 36
+  status:
+    $ref: ./IdentificationStatus.yaml

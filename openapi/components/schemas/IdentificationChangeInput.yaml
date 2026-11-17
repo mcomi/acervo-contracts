@@ -1,0 +1,25 @@
+type: object
+description: identify requires copyId, optionally partLabel, and forbids linkId and reason. correct
+  requires linkId, copyId and nonblank reason; it replaces partLabel (omission clears it). remove
+  requires linkId and nonblank reason and forbids copyId and partLabel. New or changed copy targets
+  must belong to an active work. No-op correction is invalid. All absent optional fields are
+  omitted, never null.
+required:
+  - action
+properties:
+  action:
+    $ref: ./IdentificationAction.yaml
+  linkId: &a1
+    type: string
+    format: uuid
+    maxLength: 36
+  copyId: *a1
+  partLabel:
+    type: string
+    minLength: 1
+    maxLength: 200
+  reason:
+    type: string
+    minLength: 1
+    maxLength: 1000
+additionalProperties: false

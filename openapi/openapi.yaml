@@ -79,6 +79,26 @@ paths:
     $ref: paths/locations/code-format.yaml
   /locations/code-format-preview:
     $ref: paths/locations/code-format-preview.yaml
+  /catalog/copy-terms:
+    $ref: paths/catalog/copy-terms.yaml
+  /catalog/copy-term-definitions:
+    $ref: paths/catalog/copy-term-definitions.yaml
+  /catalog/copy-term-definitions/{termId}:
+    $ref: paths/catalog/copy-term-definition.yaml
+  /catalog/works/{workId}/copies:
+    $ref: paths/catalog/work-copies.yaml
+  /catalog/copies/{copyId}:
+    $ref: paths/catalog/copy.yaml
+  /custody/works/{workId}/copy-placements:
+    $ref: paths/custody/work-copy-placements.yaml
+  /custody/containers/{containerId}/identification:
+    $ref: paths/custody/container-identification.yaml
+  /custody/containers/{containerId}/identification/links:
+    $ref: paths/custody/container-identification-links.yaml
+  /custody/containers/{containerId}/identification/changes:
+    $ref: paths/custody/container-identification-changes.yaml
+  /custody/containers/{containerId}/identification/changes/{changeId}:
+    $ref: paths/custody/container-identification-change.yaml
 components:
   securitySchemes:
     bearerAuth:

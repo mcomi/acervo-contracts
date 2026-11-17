@@ -1,0 +1,96 @@
+get:
+  operationId: listCopyTermDefinitions
+  tags:
+    - catalog
+  summary: List copy vocabulary definitions
+  description: Includes inactive definitions by default. Sort by code then id.
+  x-permission: catalog.copy-vocabularies.manage
+  x-required-entitlements:
+    - catalog
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+    - name: kind
+      in: query
+      description: Filter term kind.
+      schema:
+        $ref: ../../components/schemas/CopyTermKind.yaml
+    - name: family
+      in: query
+      description: Filter carrier family.
+      schema:
+        $ref: ../../components/schemas/CarrierFamily.yaml
+    - name: search
+      in: query
+      description: Literal case-insensitive code/name substring; no wildcards.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 200
+    - name: status
+      in: query
+      description: Defaults to all.
+      schema:
+        $ref: ../../components/schemas/ReferenceStatus.yaml
+  responses:
+    '200':
+      description: Administrative terms
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CopyTermPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  operationId: createCopyTermDefinition
+  tags:
+    - catalog
+  summary: Create a copy vocabulary definition
+  description: Create an active code. Organization/actor from session; audit atomically. Character
+    normalization matches existing reference codes (ASCII uppercase; remove U+0020, U+0009, U+000A,
+    U+000D, U+00A0, U+002D; reject remaining controls and empty keys).
+  x-permission: catalog.copy-vocabularies.manage
+  x-required-entitlements:
+    - catalog
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/CopyTermCreateInput.yaml
+  responses:
+    '201':
+      description: Term created
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+        Location:
+          $ref: ../../components/headers/Location.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CopyTerm.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '409':
+      description: catalog.copy-term-code-taken; scope is organization, kind and family.
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

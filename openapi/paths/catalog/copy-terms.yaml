@@ -1,0 +1,46 @@
+get:
+  operationId: listCopyTerms
+  tags:
+    - catalog
+  summary: List selectable copy vocabulary
+  description: Active terms only, sorted by code then id. Each term is configured by the organization.
+  x-permission: catalog.copies.read
+  x-required-entitlements:
+    - catalog
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+    - name: kind
+      in: query
+      description: Filter term kind.
+      schema:
+        $ref: ../../components/schemas/CopyTermKind.yaml
+    - name: family
+      in: query
+      description: Filter carrier family.
+      schema:
+        $ref: ../../components/schemas/CarrierFamily.yaml
+    - name: search
+      in: query
+      description: Literal case-insensitive code/name substring; no wildcards.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 200
+  responses:
+    '200':
+      description: Selectable terms
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CopyTermPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

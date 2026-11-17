@@ -1,0 +1,33 @@
+type: object
+description: Concrete copy identity and catalog context. An archived work is retained for
+  traceability but its normal work link is no longer available.
+required:
+  - id
+  - workId
+  - workTitle
+  - isWorkArchived
+  - family
+  - format
+  - registeredAt
+properties:
+  id: &a1
+    type: string
+    format: uuid
+    maxLength: 36
+  workId: *a1
+  workTitle:
+    type: string
+    minLength: 1
+    maxLength: 500
+  isWorkArchived:
+    type: boolean
+  family:
+    $ref: ./CarrierFamily.yaml
+  format:
+    $ref: ./CopyTerm.yaml
+  elementType:
+    $ref: ./CopyTerm.yaml
+  registeredAt:
+    type: string
+    format: date-time
+    maxLength: 40

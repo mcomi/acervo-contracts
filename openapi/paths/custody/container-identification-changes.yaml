@@ -1,0 +1,103 @@
+parameters:
+  - $ref: ../../components/parameters/ContainerId.yaml
+get:
+  operationId: listContainerIdentificationChanges
+  tags:
+    - custody
+  summary: List identification change history
+  description: Immutable chronological evidence, latest recordedAt first, id descending tie-breaker.
+    Independent of baseline custody history.
+  x-permission: custody.identifications.read
+  x-required-entitlements:
+    - custody
+    - locations
+    - catalog
+  x-additional-permissions:
+    - locations.containers.read
+    - catalog.copies.read
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+  responses:
+    '200':
+      description: Identification history
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/IdentificationChangePage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  operationId: createContainerIdentificationChange
+  tags:
+    - custody
+  summary: Identify or correct container contents
+  description:
+    Require If-Match from the identification aggregate. Check it under lock before applying
+    the command. Atomically mutate live link, append immutable before/after event and audit, and
+    refresh stored container identification status. Never change placement, area, baseline or
+    accession data. Refetch aggregate after success; retrying with the old tag is 412 and cannot
+    append another event.
+  x-permission: custody.identifications.write
+  x-required-entitlements:
+    - custody
+    - locations
+    - catalog
+  x-additional-permissions:
+    - custody.identifications.read
+    - locations.containers.read
+    - catalog.copies.read
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/IdentificationChangeInput.yaml
+  responses:
+    '201':
+      description: Appended event; Location and ETag describe the immutable event, not the aggregate.
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+        Location:
+          $ref: ../../components/headers/Location.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/IdentificationChange.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '409':
+      description:
+        custody.copy-already-identified when the copy/container pair already has an active
+        link; custody.identification-link-inactive when the targeted link is no longer active.
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

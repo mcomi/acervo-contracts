@@ -1,0 +1,5 @@
+type: string
+maxLength: 12
+enum:
+  - format
+  - element-type

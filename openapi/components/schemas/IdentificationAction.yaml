@@ -1,0 +1,6 @@
+type: string
+maxLength: 8
+enum:
+  - identify
+  - correct
+  - remove

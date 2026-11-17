@@ -1,0 +1,29 @@
+type: object
+description: An active link viewed from the work. The container summary includes current exact
+  location and responsible area; no file path or access URL.
+required:
+  - linkId
+  - copyId
+  - containerId
+  - containerCode
+  - location
+  - responsibleArea
+properties:
+  linkId: &a1
+    type: string
+    format: uuid
+    maxLength: 36
+  copyId: *a1
+  containerId: *a1
+  containerCode:
+    type: string
+    minLength: 1
+    maxLength: 100
+  location:
+    $ref: ./StorageLocation.yaml
+  responsibleArea:
+    $ref: ./Area.yaml
+  partLabel:
+    type: string
+    minLength: 1
+    maxLength: 200

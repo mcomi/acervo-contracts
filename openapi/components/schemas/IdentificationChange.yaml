@@ -1,0 +1,35 @@
+type: object
+description: Immutable identification event. identify has after only, correct has before and after
+  with the same link ID, remove has before only. Correct/remove always have a reason. Actor and time
+  are server-derived. This is not a custody move.
+required:
+  - id
+  - containerId
+  - action
+  - actor
+  - recordedAt
+  - status
+properties:
+  id: &a1
+    type: string
+    format: uuid
+    maxLength: 36
+  containerId: *a1
+  action:
+    $ref: ./IdentificationAction.yaml
+  actor:
+    $ref: ./ObservedBy.yaml
+  recordedAt:
+    type: string
+    format: date-time
+    maxLength: 40
+  status:
+    $ref: ./IdentificationStatus.yaml
+  reason:
+    type: string
+    minLength: 1
+    maxLength: 1000
+  before:
+    $ref: ./IdentificationEvidence.yaml
+  after:
+    $ref: ./IdentificationEvidence.yaml

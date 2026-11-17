@@ -1,0 +1,14 @@
+type: object
+description: Rename, deactivate or reactivate. A deactivated term cannot be chosen for a new copy
+  but keeps its existing links.
+required:
+  - name
+  - isActive
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+  isActive:
+    type: boolean
+additionalProperties: false

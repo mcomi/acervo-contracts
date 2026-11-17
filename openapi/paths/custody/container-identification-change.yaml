@@ -1,0 +1,46 @@
+parameters:
+  - $ref: ../../components/parameters/ContainerId.yaml
+  - name: changeId
+    in: path
+    required: true
+    description: Resource ID in the session organization.
+    schema:
+      type: string
+      format: uuid
+      maxLength: 36
+get:
+  operationId: getContainerIdentificationChange
+  tags:
+    - custody
+  summary: Get identification change evidence
+  description: Read an immutable event scoped to this container and organization.
+  x-permission: custody.identifications.read
+  x-required-entitlements:
+    - custody
+    - locations
+    - catalog
+  x-additional-permissions:
+    - locations.containers.read
+    - catalog.copies.read
+  responses:
+    '200':
+      description: Identification event
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/IdentificationChange.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

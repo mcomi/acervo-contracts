@@ -1,0 +1,14 @@
+type: object
+description: Concrete physical or digital exemplar; not a container or file location. Derivation
+  points to an existing copy of this work.
+required:
+  - copy
+properties:
+  copy:
+    $ref: ./CopySummary.yaml
+  sourceCopy:
+    $ref: ./CopySummary.yaml
+  notes:
+    type: string
+    minLength: 1
+    maxLength: 10000

@@ -1,0 +1,41 @@
+parameters:
+  - name: copyId
+    in: path
+    required: true
+    description: Resource ID in the session organization.
+    schema:
+      type: string
+      format: uuid
+      maxLength: 36
+get:
+  operationId: getCatalogCopy
+  tags:
+    - catalog
+  summary: Get a catalog copy
+  description: Details and optional source. Copies of archived works are not available from this
+    catalog route; active identifications still preserve their context.
+  x-permission: catalog.copies.read
+  x-required-entitlements:
+    - catalog
+  responses:
+    '200':
+      description: Copy with source
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CatalogCopy.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

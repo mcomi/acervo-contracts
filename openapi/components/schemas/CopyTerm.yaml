@@ -1,0 +1,28 @@
+type: object
+description: Organization-managed term. Inactive terms remain readable through existing copies.
+required:
+  - id
+  - code
+  - name
+  - kind
+  - family
+  - isActive
+properties:
+  id:
+    type: string
+    format: uuid
+    maxLength: 36
+  code:
+    type: string
+    minLength: 1
+    maxLength: 100
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+  kind:
+    $ref: ./CopyTermKind.yaml
+  family:
+    $ref: ./CarrierFamily.yaml
+  isActive:
+    type: boolean

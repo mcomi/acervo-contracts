@@ -1,0 +1,23 @@
+type: object
+description: Create an active term. Code, kind and family are immutable. Code uniqueness is scoped
+  to organization, kind and family, includes inactive entries and uses the agreed reference code
+  normalization. Blank names and normalized-empty codes are invalid.
+required:
+  - code
+  - name
+  - kind
+  - family
+properties:
+  code:
+    type: string
+    minLength: 1
+    maxLength: 100
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+  kind:
+    $ref: ./CopyTermKind.yaml
+  family:
+    $ref: ./CarrierFamily.yaml
+additionalProperties: false

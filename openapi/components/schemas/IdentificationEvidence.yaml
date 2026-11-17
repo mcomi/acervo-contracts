@@ -1,0 +1,23 @@
+type: object
+description: Immutable snapshot of link values at the time of the change. Text and identity do not
+  change on work title edits or archive.
+required:
+  - linkId
+  - copyId
+  - workId
+  - workTitle
+properties:
+  linkId: &a1
+    type: string
+    format: uuid
+    maxLength: 36
+  copyId: *a1
+  workId: *a1
+  workTitle:
+    type: string
+    minLength: 1
+    maxLength: 500
+  partLabel:
+    type: string
+    minLength: 1
+    maxLength: 200

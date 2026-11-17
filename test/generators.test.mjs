@@ -104,12 +104,15 @@ describe('Spring generator', () => {
         assert.match(catalogApi, /WorksSortField sort/);
     });
 
-    it('should require If-Match on writes', async () => {
+    it('should still require If-Match on existing catalog work writes', async () => {
         const catalogApi = await readFile(new URL('CatalogApi.java', sources), 'utf8');
-
-        assert.equal(
-            catalogApi.match(/@RequestHeader\(value = "If-Match", required = true\)/g)?.length,
-            2,
+        assert.match(
+            catalogApi,
+            /ResponseEntity<Work> replaceWork\(\s*[^\n]*@RequestHeader\(value = "If-Match", required = true\)/,
+        );
+        assert.match(
+            catalogApi,
+            /ResponseEntity<Void> deleteWork\(\s*[^\n]*@RequestHeader\(value = "If-Match", required = true\)/,
         );
     });
     it('should generate a required idempotency header and typed conflict models', async () => {
@@ -144,5 +147,30 @@ describe('Reference data Spring generation', () => {
         assert.match(location, /Boolean isActive/);
         assert.ok(!location.includes('String code;'));
         assert.ok(!location.includes('UUID parentId;'));
+    });
+});
+
+describe('Copies and identification Spring generation', () => {
+    it('should generate catalog and custody operations and their headers', async () => {
+        const catalog = await readFile(new URL('CatalogApi.java', sources), 'utf8');
+        const custody = await readFile(new URL('CustodyApi.java', sources), 'utf8');
+        const change = await readFile(
+            new URL('model/IdentificationChangeInput.java', sources),
+            'utf8',
+        );
+        assert.match(catalog, /createWorkCopy\(/);
+        assert.match(
+            catalog,
+            /ResponseEntity<CatalogCopy> createWorkCopy\(\s*[^\n]*@RequestHeader\(value = "Idempotency-Key", required = true\)/,
+        );
+        assert.match(catalog, /replaceCopyTermDefinition\(/);
+        assert.match(custody, /createContainerIdentificationChange\(/);
+        assert.match(
+            custody,
+            /ResponseEntity<IdentificationChange> createContainerIdentificationChange\(\s*[^\n]*@RequestHeader\(value = "If-Match", required = true\)/,
+        );
+        assert.match(custody, /listWorkCopyPlacements\(/);
+        assert.match(change, /IdentificationAction action/);
+        assert.match(change, /UUID linkId/);
     });
 });

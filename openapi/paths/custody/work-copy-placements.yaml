@@ -1,0 +1,48 @@
+parameters:
+  - $ref: ../../components/parameters/WorkId.yaml
+get:
+  operationId: listWorkCopyPlacements
+  tags:
+    - custody
+  summary: List physical placements for a work
+  description:
+    Current active links of an active work, optionally restricted to one copy of the work.
+    Sort by copy ID then link ID. Return exact current location and area; may contain multiple
+    containers per copy. Missing work/copy membership returns 404.
+  x-permission: custody.identifications.read
+  x-required-entitlements:
+    - custody
+    - locations
+    - catalog
+  x-additional-permissions:
+    - locations.containers.read
+    - catalog.copies.read
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+    - name: copyId
+      in: query
+      description: Restrict to one existing copy belonging to the work.
+      schema:
+        type: string
+        format: uuid
+        maxLength: 36
+  responses:
+    '200':
+      description: Current physical placements
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/CopyPlacementPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
