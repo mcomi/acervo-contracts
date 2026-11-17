@@ -1,0 +1,32 @@
+type: object
+description: Non-reserving, read-only advisory preview using the submitted format and current
+  organization counter. Skip normalized codes already taken, just as registration does, without
+  incrementing the counter. Concurrent registrations can make this preview stale. No ETag or commit
+  token.
+required:
+  - prefix
+  - digits
+  - code
+  - observedAt
+properties:
+  prefix:
+    type: string
+    maxLength: 20
+    description: Preserved printable prefix, possibly empty. Reject control characters. Matching of
+      resulting codes remains server-authoritative.
+    pattern: ^[^\x00-\x1F\x7F]*$
+  digits:
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 12
+    description: Minimum zero-padding width, never truncation. Values with more digits remain complete.
+  code:
+    type: string
+    minLength: 1
+    maxLength: 100
+  observedAt:
+    type: string
+    format: date-time
+    maxLength: 40
+    readOnly: true

@@ -1,0 +1,21 @@
+type: object
+additionalProperties: false
+description: Replace name, active state and niche marker atomically. A niche cannot have any child.
+  Occupied niches cannot be deactivated or unmarked. Nodes with active children cannot be
+  deactivated. Reactivation requires an active parent. Never reparent or move material.
+required:
+  - name
+  - isActive
+  - isNiche
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+    description: Display name; whitespace-only values are invalid.
+  isActive:
+    type: boolean
+    description: Inactive definitions remain visible to administrators and retain existing
+      material/history links; they are unavailable for new registration selections.
+  isNiche:
+    type: boolean

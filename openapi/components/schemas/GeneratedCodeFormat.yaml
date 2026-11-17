@@ -1,0 +1,20 @@
+type: object
+description: Editable format configuration only. Its ETag versions prefix/digits changes, not
+  allocations of the separately locked monotonic counter. Counter values are never
+  client-controlled. Missing configuration returns 404; PUT cannot create/reset it.
+required:
+  - prefix
+  - digits
+properties:
+  prefix:
+    type: string
+    maxLength: 20
+    description: Preserved printable prefix, possibly empty. Reject control characters. Matching of
+      resulting codes remains server-authoritative.
+    pattern: ^[^\x00-\x1F\x7F]*$
+  digits:
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 12
+    description: Minimum zero-padding width, never truncation. Values with more digits remain complete.

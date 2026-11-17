@@ -3,16 +3,11 @@ info:
   title: Acervo API
   version: 0.0.0
   summary: Management of audiovisual archives as a service.
-  description: >
-    Contract between the Acervo web app and API. Conventions (errors,
-    pagination, concurrency,
-
+  description: |
+    Contract between the Acervo web app and API. Conventions (errors, pagination, concurrency,
     tenancy, naming) are in `docs/api-guidelines.md` in the contracts repo.
 
-
-    Every request acts on the organization of the signed-in user, taken from the
-    access token.
-
+    Every request acts on the organization of the signed-in user, taken from the access token.
     No path, parameter or body names an organization.
   contact:
     name: Acervo team
@@ -68,17 +63,29 @@ paths:
     $ref: paths/custody/existing-holdings.yaml
   /custody/containers/{containerId}/history:
     $ref: paths/custody/container-history.yaml
+  /locations/location-definitions:
+    $ref: paths/locations/location-definitions.yaml
+  /locations/location-definitions/{locationId}:
+    $ref: paths/locations/location-definitions-detail.yaml
+  /locations/container-type-definitions:
+    $ref: paths/locations/container-type-definitions.yaml
+  /locations/container-type-definitions/{containerTypeId}:
+    $ref: paths/locations/container-type-definitions-detail.yaml
+  /platform/area-definitions:
+    $ref: paths/platform/area-definitions.yaml
+  /platform/area-definitions/{areaId}:
+    $ref: paths/platform/area-definitions-detail.yaml
+  /locations/code-format:
+    $ref: paths/locations/code-format.yaml
+  /locations/code-format-preview:
+    $ref: paths/locations/code-format-preview.yaml
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: >
-        Access token issued by the identity provider (Keycloak, OpenID Connect).
-        Tokens are
-
-        short-lived JWTs validated following RFC8725. The token carries the user
-        and the
-
+      description: |
+        Access token issued by the identity provider (Keycloak, OpenID Connect). Tokens are
+        short-lived JWTs validated following RFC8725. The token carries the user and the
         organization; the API derives entitlements and permissions from them.

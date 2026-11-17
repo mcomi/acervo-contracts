@@ -1,0 +1,92 @@
+get:
+  operationId: listAreaDefinitions
+  tags:
+    - platform
+  summary: List administrative area-definitions
+  description:
+    Requires active verified membership and platform.areas.manage. Separate administrative
+    resource; never changes existing active operational lists. Paginated, includes inactive by
+    default; fixed code then id ordering.
+  x-permission: platform.areas.manage
+  parameters:
+    - $ref: ../../components/parameters/Page.yaml
+    - $ref: ../../components/parameters/PageSize.yaml
+    - name: status
+      in: query
+      description: Include active and inactive definitions by default.
+      required: false
+      schema:
+        $ref: ../../components/schemas/ReferenceStatus.yaml
+    - name: search
+      in: query
+      description:
+        Literal case-insensitive substring of code/name; never SQL wildcard or regex. Fixed
+        code ascending, id ascending tie-breaker.
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 200
+  responses:
+    '200':
+      description: Administrative definitions
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/AreaDefinitionPage.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  operationId: createAreaDefinition
+  tags:
+    - platform
+  summary: Create an active area-definitions
+  description: Requires active verified membership and platform.areas.manage. Session-derived
+    organization/actor; audit and create commit together. Uniqueness covers active/inactive codes in
+    this category using the agreed code_key rule. Duplicate create retry with a distinct attempt
+    must return code-taken; do not duplicate/reassign identity. No hard deletion or code editing.
+  x-permission: platform.areas.manage
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/AreaDefinitionCreateInput.yaml
+  responses:
+    '201':
+      description: Created administrative definition
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+        Location:
+          $ref: ../../components/headers/Location.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/AreaDefinition.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '409':
+      description:
+        'Stable conflict codes: platform.area-code-taken. Invalid/foreign parent references
+        instead use 400 request.invalid / not-allowed.'
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

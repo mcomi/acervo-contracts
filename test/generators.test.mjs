@@ -123,3 +123,26 @@ describe('Spring generator', () => {
         assert.ok(existsSync(new URL('model/IdempotencyKeyReusedProblem.java', sources)));
     });
 });
+
+// Administrative operations extend the existing module interfaces; consumers still own their
+// implementation. Verify the generated API rather than relying only on YAML review.
+describe('Reference data Spring generation', () => {
+    it('should generate versioned administration and a non-reserving code preview', async () => {
+        const locations = await readFile(new URL('LocationsApi.java', sources), 'utf8');
+        const platform = await readFile(new URL('PlatformApi.java', sources), 'utf8');
+        assert.match(locations, /createLocationDefinition\(/);
+        assert.match(locations, /replaceContainerTypeDefinition\(/);
+        assert.match(locations, /getGeneratedCodePreview\(/);
+        assert.match(locations, /createGeneratedCodeFormat\(/);
+        assert.match(platform, /replaceAreaDefinition\(/);
+        assert.match(locations, /@RequestHeader\(value = "If-Match", required = true\)/);
+        const location = await readFile(
+            new URL('model/LocationDefinitionUpdateInput.java', sources),
+            'utf8',
+        );
+        assert.match(location, /Boolean isNiche/);
+        assert.match(location, /Boolean isActive/);
+        assert.ok(!location.includes('String code;'));
+        assert.ok(!location.includes('UUID parentId;'));
+    });
+});

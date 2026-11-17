@@ -1,0 +1,24 @@
+type: object
+additionalProperties: false
+description: Create an active definition. Tenant, actor and timestamps come from the verified
+  session. Code is immutable after creation.
+required:
+  - code
+  - name
+properties:
+  code:
+    type: string
+    minLength: 1
+    maxLength: 100
+    description:
+      Immutable captured reference code. Uniqueness is organization/category scoped, using
+      the same exact ASCII-case/whitespace/hyphen normalization as existing container matching. No
+      reuse after deactivation. Reject normalized-empty values and controls remaining after removal.
+      Canonical matching uppercases ASCII a-z only and removes U+0020, U+0009, U+000A, U+000D,
+      U+00A0 and U+002D; reject remaining U+0000-U+001F/U+007F. Other characters and non-ASCII case
+      remain exact; no Unicode normalization.
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+    description: Display name; whitespace-only values are invalid.

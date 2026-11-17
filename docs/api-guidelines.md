@@ -83,3 +83,8 @@ request instead of making an exception in silence.
   codes. Anything else is breaking, and CI flags it with oasdiff.
 - Deprecate before removing: mark the operation or field `deprecated: true` and say in the
   description what replaces it.
+
+Computed advisory previews are query results, not versioned editable resources. They must not
+reserve or consume a value, and must explain that concurrent activity may change the eventual
+result. Version the persisted configuration with ETag/If-Match separately; do not use a preview
+as a reservation token or make normal allocations change its configuration version.

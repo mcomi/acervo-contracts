@@ -1,0 +1,21 @@
+type: object
+additionalProperties: false
+required:
+  - prefix
+  - digits
+description: Replace prefix and minimum digit width with If-Match. Lock the organization
+  counter/configuration atomically; never rewind/reset next_value or rewrite existing labels.
+  Increment configuration version independently of allocations.
+properties:
+  prefix:
+    type: string
+    maxLength: 20
+    description: Preserved printable prefix, possibly empty. Reject control characters. Matching of
+      resulting codes remains server-authoritative.
+    pattern: ^[^\x00-\x1F\x7F]*$
+  digits:
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 12
+    description: Minimum zero-padding width, never truncation. Values with more digits remain complete.

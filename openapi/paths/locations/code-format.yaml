@@ -1,0 +1,123 @@
+get:
+  operationId: getGeneratedCodeFormat
+  tags:
+    - locations
+  summary: Get the generated container code format
+  description: Requires locations entitlement and locations.code-format.manage. ETag versions only
+    configuration. Reads never allocate a code. Missing organization configuration returns 404 and
+    must not silently provision/reset a counter.
+  x-permission: locations.code-format.manage
+  responses:
+    '200':
+      description: Current prefix and digit width
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/GeneratedCodeFormat.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+put:
+  operationId: replaceGeneratedCodeFormat
+  tags:
+    - locations
+  summary: Replace the generated code format
+  description: Requires locations entitlement and locations.code-format.manage. Mandatory If-Match
+    protects prefix/digits. Lock the configuration/counter row with allocation, audit in the same
+    transaction, preserve next_value exactly, and never rewrite issued codes. Only the configuration
+    version changes. No next number, reset or sequence editing field is accepted. Missing
+    configuration is 404, never upsert.
+  x-permission: locations.code-format.manage
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/GeneratedCodeFormatInput.yaml
+  responses:
+    '200':
+      description: Saved prefix and digits with new ETag
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/GeneratedCodeFormat.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+post:
+  operationId: createGeneratedCodeFormat
+  tags:
+    - locations
+  summary: Initialize a missing generated code format
+  description: 'Requires locations entitlement and locations.code-format.manage. Explicit one-time
+    setup for an organization with no configuration; no demo seed required. Server initializes the
+    counter at one and future allocations skip taken normalized labels. Existing configurations
+    cannot be reset or overwritten: atomically reject with 409 locations.code-format-already-exists.
+    Serialize against concurrent setup/allocation; commit setup and audit together using the
+    verified session. No client-controlled counter or tenant. Subsequent edits use PUT with
+    If-Match.'
+  x-permission: locations.code-format.manage
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/GeneratedCodeFormatInput.yaml
+  responses:
+    '201':
+      description: Initialized configuration with server-owned counter
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+        Location:
+          $ref: ../../components/headers/Location.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/GeneratedCodeFormat.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '409':
+      description: locations.code-format-already-exists; no counter reset or configuration mutation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

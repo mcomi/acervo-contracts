@@ -1,0 +1,86 @@
+parameters:
+  - name: areaId
+    in: path
+    required: true
+    description: Same-organization administrative definition ID.
+    schema:
+      type: string
+      format: uuid
+      maxLength: 36
+get:
+  operationId: getAreaDefinition
+  tags:
+    - platform
+  summary: Get an administrative definition
+  description: Requires active verified membership and platform.areas.manage. Includes inactive
+    definitions. Return ETag for editable stored fields. Unknown and cross-organization IDs return
+    the same 404.
+  x-permission: platform.areas.manage
+  responses:
+    '200':
+      description: Administrative definition with current ETag
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/AreaDefinition.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+put:
+  operationId: replaceAreaDefinition
+  tags:
+    - platform
+  summary: Replace editable administrative fields
+  description:
+    'Requires active verified membership and platform.areas.manage. If-Match is mandatory;
+    stale version is 412, absent version 428. Code and parent are immutable. Atomically audit
+    name/active/niche changes with session actor; concurrent operations must not bypass invariants.
+    No usage restriction on deactivation: existing material links remain visible and cannot be
+    selected for new registration. No custody event or material move.'
+  x-permission: platform.areas.manage
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/AreaDefinitionUpdateInput.yaml
+  responses:
+    '200':
+      description: Updated definition and ETag
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/AreaDefinition.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

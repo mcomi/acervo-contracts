@@ -1,0 +1,8 @@
+type: string
+maxLength: 8
+enum:
+  - all
+  - active
+  - inactive
+description: Administrative visibility filter. Defaults to all, including inactive definitions.
+default: all

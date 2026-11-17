@@ -1,0 +1,96 @@
+parameters:
+  - name: locationId
+    in: path
+    required: true
+    description: Same-organization administrative definition ID.
+    schema:
+      type: string
+      format: uuid
+      maxLength: 36
+get:
+  operationId: getLocationDefinition
+  tags:
+    - locations
+  summary: Get an administrative definition
+  description: Requires locations entitlement and locations.references.manage. Includes inactive
+    definitions. Return ETag for editable stored fields. Unknown and cross-organization IDs return
+    the same 404.
+  x-permission: locations.references.manage
+  responses:
+    '200':
+      description: Administrative definition with current ETag
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/LocationDefinition.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml
+put:
+  operationId: replaceLocationDefinition
+  tags:
+    - locations
+  summary: Replace editable administrative fields
+  description:
+    Requires locations entitlement and locations.references.manage. If-Match is mandatory;
+    stale version is 412, absent version 428. Code and parent are immutable. Atomically audit
+    name/active/niche changes with session actor; concurrent operations must not bypass invariants.
+    locations.location-has-children; locations.location-has-material;
+    locations.location-has-active-children; locations.parent-inactive. Validate invariants against
+    concurrent child creation and registration in the same database transaction. No custody event or
+    material move.
+  x-permission: locations.references.manage
+  parameters:
+    - $ref: ../../components/parameters/IfMatch.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/LocationDefinitionUpdateInput.yaml
+  responses:
+    '200':
+      description: Updated definition and ETag
+      headers:
+        ETag:
+          $ref: ../../components/headers/ETag.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/LocationDefinition.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '409':
+      description: locations.location-has-children; locations.location-has-material;
+        locations.location-has-active-children; locations.parent-inactive. Validate invariants
+        against concurrent child creation and registration in the same database transaction.
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '412':
+      $ref: ../../components/responses/PreconditionFailed.yaml
+    '428':
+      $ref: ../../components/responses/PreconditionRequired.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

@@ -1,0 +1,46 @@
+type: object
+description: Administrative node in the configured storage tree, including inactive and non-niche
+  nodes. Parent identity and code are immutable. No derived path/counts are included in this
+  versioned representation; use parent links for the administrative tree. Operational niche reads
+  retain their original shape.
+required:
+  - id
+  - code
+  - name
+  - isActive
+  - isNiche
+properties:
+  id:
+    type: string
+    format: uuid
+    maxLength: 36
+  code:
+    type: string
+    minLength: 1
+    maxLength: 100
+    description:
+      Immutable captured reference code. Uniqueness is organization/category scoped, using
+      the same exact ASCII-case/whitespace/hyphen normalization as existing container matching. No
+      reuse after deactivation. Reject normalized-empty values and controls remaining after removal.
+      Canonical matching uppercases ASCII a-z only and removes U+0020, U+0009, U+000A, U+000D,
+      U+00A0 and U+002D; reject remaining U+0000-U+001F/U+007F. Other characters and non-ASCII case
+      remain exact; no Unicode normalization.
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+    description: Display name; whitespace-only values are invalid.
+  isActive:
+    type: boolean
+    description: Inactive definitions remain visible to administrators and retain existing
+      material/history links; they are unavailable for new registration selections.
+  parentId:
+    type: string
+    format: uuid
+    maxLength: 36
+    description: Parent definition ID. Omitted for a root; never null.
+  isNiche:
+    type: boolean
+    description:
+      Explicit terminal position eligible for material. A niche has no children, including
+      inactive children.

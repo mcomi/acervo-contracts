@@ -1,0 +1,32 @@
+type: object
+additionalProperties: false
+description: Create an active node. Optional parentId must identify an active same-organization
+  non-niche parent. Omit it for a root. Code and parent cannot subsequently change. Maximum depth
+  20, matching the frozen operational path bound.
+required:
+  - code
+  - name
+  - isNiche
+properties:
+  code:
+    type: string
+    minLength: 1
+    maxLength: 100
+    description:
+      Immutable captured reference code. Uniqueness is organization/category scoped, using
+      the same exact ASCII-case/whitespace/hyphen normalization as existing container matching. No
+      reuse after deactivation. Reject normalized-empty values and controls remaining after removal.
+      Canonical matching uppercases ASCII a-z only and removes U+0020, U+0009, U+000A, U+000D,
+      U+00A0 and U+002D; reject remaining U+0000-U+001F/U+007F. Other characters and non-ASCII case
+      remain exact; no Unicode normalization.
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+    description: Display name; whitespace-only values are invalid.
+  parentId:
+    type: string
+    format: uuid
+    maxLength: 36
+  isNiche:
+    type: boolean

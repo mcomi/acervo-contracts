@@ -1,0 +1,62 @@
+get:
+  operationId: getGeneratedCodePreview
+  tags:
+    - locations
+  summary: Preview a generated code without reserving it
+  description: 'Requires locations entitlement and locations.code-format.manage. Required candidate
+    prefix/digits allow preview before saving. Pure read: start at current organization next_value
+    and skip normalized existing-code collisions without advancing/reserving the counter. Preview is
+    advisory under concurrent registrations. Same validation and formatting as allocation; bounded
+    collision scan failure returns 409 locations.code-preview-unavailable; exhausted counter returns
+    409 locations.code-sequence-exhausted. Missing configuration is 404. No audit event for a read.'
+  x-permission: locations.code-format.manage
+  parameters:
+    - name: prefix
+      in: query
+      description: Candidate prefix; an explicit empty query value is allowed.
+      required: true
+      schema:
+        type: string
+        maxLength: 20
+        description:
+          Preserved printable prefix, possibly empty. Reject control characters. Matching of
+          resulting codes remains server-authoritative.
+        pattern: ^[^\x00-\x1F\x7F]*$
+      allowEmptyValue: true
+    - name: digits
+      in: query
+      description: Candidate minimum numeric width.
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 12
+        description: Minimum zero-padding width, never truncation. Values with more digits remain complete.
+  responses:
+    '200':
+      description: Advisory preview, not a reservation
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/GeneratedCodePreview.yaml
+    '400':
+      $ref: ../../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../../components/responses/NotFound.yaml
+    '409':
+      description:
+        locations.code-preview-unavailable or locations.code-sequence-exhausted; no counter or
+        configuration change.
+      content:
+        application/problem+json:
+          schema:
+            $ref: ../../components/schemas/Problem.yaml
+    '429':
+      $ref: ../../components/responses/TooManyRequests.yaml
+    '500':
+      $ref: ../../components/responses/InternalServerError.yaml

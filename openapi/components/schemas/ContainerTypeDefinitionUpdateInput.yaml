@@ -1,0 +1,17 @@
+type: object
+additionalProperties: false
+description: Replace all editable fields, with If-Match. Code and identity remain immutable.
+  Deactivation or reactivation never rewrites existing material/history links.
+required:
+  - name
+  - isActive
+properties:
+  name:
+    type: string
+    minLength: 1
+    maxLength: 200
+    description: Display name; whitespace-only values are invalid.
+  isActive:
+    type: boolean
+    description: Inactive definitions remain visible to administrators and retain existing
+      material/history links; they are unavailable for new registration selections.
